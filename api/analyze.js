@@ -79,6 +79,20 @@ Return this exact JSON format:
   "estimated_duty": "",
   "section_301_risk": "",
   "bond_recommendation": "",
+  Determine:
+- Product description
+- Country of origin
+- Invoice value
+- Quantity
+- Suggested HTS code
+- Estimated duty
+- Section 301 applicability
+- Customs bond recommendation
+- FDA/PGA risks
+- Import compliance risks
+- Broker notes
+
+If shipment value exceeds $2500 or importer is likely importing regularly, recommend Continuous Bond.
   "compliance_risks": "",
   "case_status": "",
   "broker_notes": ""
