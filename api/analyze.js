@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { formidable } from "formidable";
 import fs from "fs";
-import * as XLSX from "xlsx";
+import XLSX from "xlsx";
 
 export const config = {
   api: {
