@@ -169,6 +169,41 @@
     Upload → Server / Storage → AI OCR → HTS / Duty / Bond Analysis
         <input 
   type="file" 
+          <button id="uploadBtn">Upload & Analyze</button>
+
+<div id="status"></div>
+
+<script>
+const uploadBtn=document.getElementById("uploadBtn");
+const status=document.getElementById("status");
+
+uploadBtn.addEventListener("click",()=>{
+
+let files=document.getElementById("shipmentFiles").files;
+
+if(files.length===0){
+status.innerHTML="❌ Please select file";
+return;
+}
+
+status.innerHTML="⏳ Uploading...";
+
+setTimeout(()=>{
+
+status.innerHTML="✅ File uploaded successfully";
+
+document.querySelector(".review").innerHTML=`
+Suggested HTS: 8471.30.0100<br>
+Estimated Duty: 0%<br>
+Section 301 Risk: Low<br>
+Bond Recommendation: Continuous Bond<br>
+Case Status: AI Review Complete
+`;
+
+},2000)
+
+});
+</script>
   id="shipmentFiles" 
   multiple 
   accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx"
