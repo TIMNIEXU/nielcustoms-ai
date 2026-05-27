@@ -167,6 +167,32 @@
       <p>
         Upload your import documents and receive AI-assisted HTS classification,
     Upload → Server / Storage → AI OCR → HTS / Duty / Bond Analysis
+        <input 
+  type="file" 
+  id="shipmentFiles" 
+  multiple 
+  accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx"
+/>
+
+<p id="fileList">No files selected</p>
+
+<script>
+  const input = document.getElementById("shipmentFiles");
+  const fileList = document.getElementById("fileList");
+
+  input.addEventListener("change", function () {
+    if (input.files.length === 0) {
+      fileList.textContent = "No files selected";
+      return;
+    }
+
+    fileList.innerHTML = Array.from(input.files)
+      .map(file => "✅ " + file.name)
+      .join("<br>");
+  });
+</script>
+Upload → Server / Storage → AI OCR → HTS / Duty / Bond Analysis
+
         duty estimates, bond recommendations, and customs compliance risk review.
       </p>
       <div class="buttons">
@@ -252,28 +278,3 @@
 
 </body>
 </html>
-<input 
-  type="file" 
-  id="shipmentFiles" 
-  multiple 
-  accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx"
-/>
-
-<p id="fileList">No files selected</p>
-
-<script>
-  const input = document.getElementById("shipmentFiles");
-  const fileList = document.getElementById("fileList");
-
-  input.addEventListener("change", function () {
-    if (input.files.length === 0) {
-      fileList.textContent = "No files selected";
-      return;
-    }
-
-    fileList.innerHTML = Array.from(input.files)
-      .map(file => "✅ " + file.name)
-      .join("<br>");
-  });
-</script>
-Upload → Server / Storage → AI OCR → HTS / Duty / Bond Analysis
