@@ -173,7 +173,22 @@
 <h1 id="title">
 AI-Powered Customs, Bond & Logistics Review
 </h1>
-
+<h1 data-i18n="heroTitle">AI-Powered Customs, Bond & Logistics Review</h1>
+<p data-i18n="heroDesc">Upload your import documents...</p>
+<a data-i18n="services">Services</a>
+<a data-i18n="pricing">Pricing</a>
+<a data-i18n="contact">Contact</a>
+<button data-i18n="startAnalysis">Start Free Analysis</button>
+<button data-i18n="requestClearance">Request Clearance</button>
+<h2 data-i18n="uploadTitle">Upload Shipment Documents</h2>
+<p data-i18n="uploadHint">Commercial Invoice · Packing List · B/L · Arrival Notice</p>
+<p data-i18n="dragDrop">Drag & drop files here</p>
+<h3 data-i18n="reviewTitle">AI Review Preview</h3>
+<p data-i18n="suggestedHTS">Suggested HTS: Pending</p>
+<p data-i18n="estimatedDuty">Estimated Duty: Pending</p>
+<p data-i18n="section301">Section 301 Risk: Pending</p>
+<p data-i18n="bondRecommendation">Bond Recommendation: Pending</p>
+<p data-i18n="caseStatus">Case Status: Documents Needed</p>
 <p id="desc">
 Upload your import documents and receive AI-assisted HTS classification
 </p>
@@ -463,7 +478,62 @@ content[currentLang].upload;
 
 document.getElementById("langBtn").innerText=
 content[currentLang].lang;
+<button id="langBtn">中文</button>
 
+<script>
+let lang = "en";
+
+const text = {
+  en: {
+    services: "Services",
+    pricing: "Pricing",
+    contact: "Contact",
+    heroTitle: "AI-Powered Customs, Bond & Logistics Review",
+    heroDesc: "Upload your import documents and receive AI-assisted HTS classification, duty estimates, bond recommendations, and customs compliance risk review.",
+    startAnalysis: "Start Free Analysis",
+    requestClearance: "Request Clearance",
+    uploadTitle: "Upload Shipment Documents",
+    uploadHint: "Commercial Invoice · Packing List · B/L · Arrival Notice",
+    dragDrop: "Drag & drop files here",
+    reviewTitle: "AI Review Preview",
+    suggestedHTS: "Suggested HTS: Pending",
+    estimatedDuty: "Estimated Duty: Pending",
+    section301: "Section 301 Risk: Pending",
+    bondRecommendation: "Bond Recommendation: Pending",
+    caseStatus: "Case Status: Documents Needed"
+  },
+  zh: {
+    services: "服务",
+    pricing: "价格",
+    contact: "联系我们",
+    heroTitle: "AI智能报关、保证金与物流审核",
+    heroDesc: "上传进口文件，获得 AI 辅助的 HTS 归类、关税预估、保证金建议和海关合规风险审核。",
+    startAnalysis: "免费开始分析",
+    requestClearance: "申请清关",
+    uploadTitle: "上传货运文件",
+    uploadHint: "商业发票 · 装箱单 · 提单 · 到港通知",
+    dragDrop: "拖拽文件到这里",
+    reviewTitle: "AI审核预览",
+    suggestedHTS: "建议 HTS：待分析",
+    estimatedDuty: "预估关税：待分析",
+    section301: "301条款风险：待分析",
+    bondRecommendation: "保证金建议：待分析",
+    caseStatus: "案件状态：需要文件"
+  }
+};
+
+function switchLanguage() {
+  lang = lang === "en" ? "zh" : "en";
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    el.innerText = text[lang][key];
+  });
+
+  document.getElementById("langBtn").innerText =
+    lang === "en" ? "中文" : "English";
+}
+</script>
 });
 
 </script>
