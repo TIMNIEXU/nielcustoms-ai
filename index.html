@@ -159,7 +159,7 @@
     <a href="#contact">Contact</a>
   </nav>
 </header>
-
+<button id="langBtn">中文</button>
 <main>
   <section class="hero">
     <div>
@@ -170,7 +170,17 @@
         <input 
   type="file" 
          <input
+<h1 id="title">
+AI-Powered Customs, Bond & Logistics Review
+</h1>
 
+<p id="desc">
+Upload your import documents and receive AI-assisted HTS classification
+</p>
+
+<button id="uploadBtn">
+Upload & Analyze
+</button>
 <button id="uploadBtn"><button id="uploadBtn"><button id="uploadBtn">Upload & Analyze</button>
 
 <div id="status"></div>
@@ -415,3 +425,45 @@ Upload → Server / Storage → AI OCR → HTS / Duty / Bond Analysis
 
 </body>
 </html>
+<script>
+
+let currentLang="en";
+
+const content={
+
+en:{
+title:"AI-Powered Customs, Bond & Logistics Review",
+desc:"Upload your import documents and receive AI-assisted HTS classification",
+upload:"Upload & Analyze",
+lang:"中文"
+},
+
+zh:{
+title:"AI智能报关、保证金与物流审核",
+desc:"上传进口文件，自动进行 HTS 归类、税金估算和合规审核",
+upload:"上传并分析",
+lang:"English"
+}
+
+};
+
+document.getElementById("langBtn")
+.addEventListener("click",()=>{
+
+currentLang=currentLang==="en"?"zh":"en";
+
+document.getElementById("title").innerText=
+content[currentLang].title;
+
+document.getElementById("desc").innerText=
+content[currentLang].desc;
+
+document.getElementById("uploadBtn").innerText=
+content[currentLang].upload;
+
+document.getElementById("langBtn").innerText=
+content[currentLang].lang;
+
+});
+
+</script>
