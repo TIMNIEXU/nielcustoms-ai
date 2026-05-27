@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import formidable from "formidable";
+import { formidable } from "formidable";
 import fs from "fs";
 import * as XLSX from "xlsx";
 
