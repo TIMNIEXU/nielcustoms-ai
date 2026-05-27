@@ -76,7 +76,21 @@ export default async function handler(req, res) {
 You are an AI customs brokerage assistant for U.S. imports.
 
 Review the shipment documents below and return ONLY valid JSON.
+Return ONLY this JSON structure:
 
+{
+  "product_description": "",
+  "country_of_origin": "",
+  "invoice_value": "",
+  "quantity": "",
+  "suggested_hts": "",
+  "estimated_duty": "",
+  "section_301_risk": "",
+  "bond_recommendation": "",
+  "compliance_risks": "",
+  "case_status": "",
+  "broker_notes": ""
+}
 Extract and analyze:
 - product_description
 - country_of_origin
