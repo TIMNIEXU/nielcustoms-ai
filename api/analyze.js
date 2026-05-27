@@ -72,46 +72,9 @@ export default async function handler(req, res) {
       }
     }
 
-  {
-  role: "system",
-  content: `
-You are a licensed U.S. Customs Broker AI assistant.
+    const prompt = `
+Review the shipment documents below and return ONLY valid JSON.
 
-Analyze shipment documents professionally.
-
-You must determine:
-- Product description
-- Country of origin
-- Invoice value
-- Quantity
-- Suggested HTS code
-- Estimated duty
-- Section 301 applicability
-- Customs bond recommendation
-- FDA/PGA risks
-- Import compliance risks
-- Broker notes
-
-Always return ONLY valid JSON.
-`
-},
-{
-  role: "user",
-  content: prompt
-}
-{
-  "product_description": "",
-  "country_of_origin": "",
-  "invoice_value": "",
-  "quantity": "",
-  "suggested_hts": "",
-  "estimated_duty": "",
-  "section_301_risk": "",
-  "bond_recommendation": "",
-  "compliance_risks": "",
-  "case_status": "",
-  "broker_notes": ""
-}
 Extract and analyze:
 - product_description
 - country_of_origin
@@ -131,49 +94,13 @@ This is preliminary AI review only. Do not claim final legal classification.
 Shipment documents:
 ${documentText}
 `;
-
-   const completion = await openai.chat.completions.create({
+const completion = await openai.chat.completions.create({
   model: "gpt-4o-mini",
   response_format: { type: "json_object" },
   messages: [
     {
       role: "system",
-      content: `
-You are a licensed U.S. Customs Broker AI assistant.
-
-Analyze shipment documents professionally.
-
-Determine:
-- Product description
-- Country of origin
-- Invoice value
-- Quantity
-- Suggested HTS code
-- Estimated duty
-- Section 301 applicability
-- Customs bond recommendation
-- FDA/PGA risks
-- Import compliance risks
-- Broker notes
-
-Return ONLY valid JSON.
-
-Use this exact JSON format:
-
-{
-  "product_description": "",
-  "country_of_origin": "",
-  "invoice_value": "",
-  "quantity": "",
-  "suggested_hts": "",
-  "estimated_duty": "",
-  "section_301_risk": "",
-  "bond_recommendation": "",
-  "compliance_risks": "",
-  "case_status": "",
-  "broker_notes": ""
-}
-`
+      content: "You are a licensed U.S. Customs Broker AI assistant. Return only valid JSON."
     },
     {
       role: "user",
@@ -183,45 +110,38 @@ Use this exact JSON format:
   temperature: 0.1
 });
 
-    const text = completion.choices[0].message.content;
+const text = completion.choices[0].message.content;
 
-    let data;
+let data;
 
-    try {
-      data = JSON.parse(text);
-    } catch {
-      data = {
-        product_description: "Review needed",
-        country_of_origin: "Review needed",
-        invoice_value: "Review needed",
-        quantity: "Review needed",
-        suggested_hts: "Review needed",
-        estimated_duty: "Review needed",
-        section_301_risk: "Review needed",
-        bond_recommendation: "Review needed",
-        compliance_risks: text,
-        case_status: "Broker review required",
-        broker_notes: "AI returned non-JSON output.",
-      };
-    }
-
-    res.status(200).json({
-      hts: data.suggested_hts || "Review needed",
-      duty: data.estimated_duty || "Review needed",
-      section301: data.section_301_risk || "Review needed",
-      bond: data.bond_recommendation || "Review needed",
-      status: data.case_status || "Broker review required",
-      product: data.product_description || "Review needed",
-      origin: data.country_of_origin || "Review needed",
-      value: data.invoice_value || "Review needed",
-      quantity: data.quantity || "Review needed",
-      risks: data.compliance_risks || "Review needed",
-      notes: data.broker_notes || "Review needed",
-    });
-  } catch (error) {
-    res.status(500).json({
-      error: "AI analysis failed",
-      details: error.message,
-    });
-  }
+try {
+  data = JSON.parse(text);
+} catch {
+  data = {
+    product_description: "Review needed",
+    country_of_origin: "Review needed",
+    invoice_value: "Review needed",
+    quantity: "Review needed",
+    suggested_hts: "Review needed",
+    estimated_duty: "Review needed",
+    section_301_risk: "Review needed",
+    bond_recommendation: "Review needed",
+    compliance_risks: text,
+    case_status: "Broker review required",
+    broker_notes: "AI returned non-JSON output."
+  };
 }
+
+res.status(200).json({
+  hts: data.suggested_hts || "Review needed",
+  duty: data.estimated_duty || "Review needed",
+  section301: data.section_301_risk || "Review needed",
+  bond: data.bond_recommendation || "Review needed",
+  status: data.case_status || "Broker review required",
+  product: data.product_description || "Review needed",
+  origin: data.country_of_origin || "Review needed",
+  value: data.invoice_value || "Review needed",
+  quantity: data.quantity || "Review needed",
+  risks: data.compliance_risks || "Review needed",
+  notes: data.broker_notes || "Review needed"
+});
