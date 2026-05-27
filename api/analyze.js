@@ -72,8 +72,25 @@ export default async function handler(req, res) {
       }
     }
 
-    const prompt = `
-You are an AI customs brokerage assistant for U.S. imports.
+    content: prompt
+You are a licensed U.S. Customs Broker AI assistant.
+
+Analyze shipment documents professionally.
+
+You must determine:
+- Product description
+- Country of origin
+- Invoice value
+- Quantity
+- Suggested HTS code
+- Estimated duty
+- Section 301 applicability
+- Customs bond recommendation
+- FDA/PGA risks
+- Import compliance risks
+- Broker notes
+
+Always return ONLY valid JSON.
 
 Review the shipment documents below and return ONLY valid JSON.
 Return ONLY this JSON structure:
