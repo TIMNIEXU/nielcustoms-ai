@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Niel Customs AI</title>
+  <meta name="description" content="AI-powered customs, HTS, duty, bond and logistics review for importers." />
+  <style>
+    :root {
+      --dark: #111827;
+      --muted: #4b5563;
+      --line: #e5e7eb;
+      --soft: #f7f9fc;
+      --card: #ffffff;
+      --blue-soft: #eef6ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #f8fbff 0%, #f3f6fb 100%);
+      color: var(--dark);
+    }
+
+    header {
+      padding: 22px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .right-nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #374151;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .lang-switch {
+      display: flex;
+      border: 1px solid #d1d5db;
+      border-radius: 999px;
+      background: white;
+      overflow: hidden;
+    }
+
+    .lang-switch button {
+      border: 0;
+      background: transparent;
+      padding: 8px 13px;
+      cursor: pointer;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .lang-switch button.active {
+      background: var(--dark);
+      color: white;
+    }
+
+    .hero {
+      padding: 82px 8% 70px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 52px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: #1d4ed8;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 5.2vw, 72px);
+      line-height: 1.02;
+      margin: 0 0 24px;
+      letter-spacing: -2px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 0 0 32px;
+      max-width: 760px;
+    }
+
+    .buttons a, .submit-btn {
+      display: inline-block;
+      margin-right: 12px;
+      padding: 15px 22px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid transparent;
+    }
+
+    .primary, .submit-btn {
+      background: var(--dark);
+      color: white;
+    }
+
+    .secondary {
+      background: white;
+      color: var(--dark);
+      border-color: #d1d5db !important;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 30px;
+      border-radius: 22px;
+      box-shadow: 0 24px 55px rgba(15,23,42,0.10);
+      border: 1px solid var(--line);
+    }
+
+    .card h2 { margin-top: 0; font-size: 28px; }
+
+    .upload-box {
+      border: 2px dashed #cbd5e1;
+      border-radius: 16px;
+      padding: 34px 22px;
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 18px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      background: #fbfdff;
+    }
+
+    .upload-box:hover, .upload-box.dragover {
+      border-color: #111827;
+      background: #f1f5f9;
+      color: #111827;
+    }
+
+    .upload-icon {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .upload-title {
+      font-weight: 800;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .upload-hint {
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .file-input { display: none; }
+
+    .file-list {
+      display: none;
+      margin: 0 0 20px;
+      padding: 14px 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      color: #334155;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .result {
+      background: #f9fafb;
+      border-radius: 14px;
+      padding: 20px;
+      line-height: 1.9;
+      font-size: 16px;
+    }
+
+    .submit-row { margin-top: 18px; }
+    .submit-btn { width: 100%; cursor: pointer; font-size: 16px; }
+
+    section { padding: 64px 8%; }
+
+    .section-title {
+      font-size: 34px;
+      margin: 0 0 26px;
+      text-align: center;
+    }
+
+    .features, .pricing {
+      display: grid;
+      gap: 22px;
+    }
+
+    .features { grid-template-columns: repeat(4, 1fr); }
+    .pricing { grid-template-columns: repeat(3, 1fr); max-width: 1000px; margin: auto; }
+
+    .feature, .price {
+      background: white;
+      padding: 26px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+    }
+
+    .feature h3, .price h3 { margin-top: 0; font-size: 18px; }
+    .price strong { font-size: 34px; }
+
+    footer {
+      padding: 36px 8%;
+      background: var(--dark);
+      color: white;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .hero, .features, .pricing { grid-template-columns: 1fr; }
+      .nav { display: none; }
+      header { padding: 18px 5%; }
+      .hero, section { padding-left: 5%; padding-right: 5%; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Niel Customs AI</div>
+  <div class="right-nav">
+    <nav class="nav">
+      <a href="#services" data-i18n="navServices">Services</a>
+      <a href="#pricing" data-i18n="navPricing">Pricing</a>
+      <a href="#contact" data-i18n="navContact">Contact</a>
+    </nav>
+    <div class="lang-switch" aria-label="Language switch">
+      <button type="button" id="btnEn" class="active">EN</button>
+      <button type="button" id="btnZh">中文</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <div class="eyebrow" data-i18n="eyebrow">Customs AI · Bond · Logistics</div>
+      <h1 data-i18n="heroTitle">AI-Powered Customs, Bond & Logistics Review</h1>
+      <p data-i18n="heroSubtitle">
+        Upload your import documents and receive AI-assisted HTS classification, duty estimates, bond recommendations, and customs compliance risk review.
+      </p>
+      <div class="buttons">
+        <a class="primary" href="#upload" data-i18n="startBtn">Start Free Analysis</a>
+        <a class="secondary" href="#contact" data-i18n="requestBtn">Request Clearance</a>
+      </div>
+    </div>
+
+    <div class="card" id="upload">
+      <h2 data-i18n="uploadTitle">Upload Shipment Documents</h2>
+
+      <label class="upload-box" id="uploadBox" for="fileInput">
+        <div class="upload-icon">⬆️</div>
+        <div class="upload-title" data-i18n="uploadDocs">Commercial Invoice · Packing List · B/L · Arrival Notice</div>
+        <div class="upload-hint" data-i18n="uploadHint">Click or drag files here</div>
+        <div class="upload-hint" data-i18n="uploadTypes">PDF, JPG, PNG, DOC, DOCX, XLS, XLSX accepted</div>
+      </label>
+      <input class="file-input" id="fileInput" type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" />
+
+      <div class="file-list" id="fileList"></div>
+
+      <div class="result">
+        <strong data-i18n="previewTitle">AI Review Preview</strong><br>
+        <span data-i18n="hts">Suggested HTS: Pending</span><br>
+        <span data-i18n="duty">Estimated Duty: Pending</span><br>
+        <span data-i18n="section301">Section 301 Risk: Pending</span><br>
+        <span data-i18n="bond">Bond Recommendation: Pending</span><br>
+        <span data-i18n="status">Case Status: Documents Needed</span>
+      </div>
+
+      <div class="submit-row">
+        <button class="submit-btn" type="button" id="submitBtn" data-i18n="submitBtn">Submit Documents for Review</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <h2 class="section-title" data-i18n="servicesTitle">What Niel Customs AI Can Review</h2>
+    <div class="features">
+      <div class="feature">
+        <h3 data-i18n="f1Title">HTS Classification</h3>
+        <p data-i18n="f1Text">AI-assisted HTS suggestions with human customs review.</p>
+      </div>
+      <div class="feature">
+        <h3 data-i18n="f2Title">Duty Estimate</h3>
+        <p data-i18n="f2Text">Estimate duty, MPF, HMF, Section 301, and related charges.</p>
+      </div>
+      <div class="feature">
+        <h3 data-i18n="f3Title">Bond Recommendation</h3>
+        <p data-i18n="f3Text">Determine whether a single transaction bond or continuous bond may be needed.</p>
+      </div>
+      <div class="feature">
+        <h3 data-i18n="f4Title">Compliance Risk</h3>
+        <p data-i18n="f4Text">Flag possible AD/CVD, FDA, PGA, origin, and undervaluation risks.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2 class="section-title" data-i18n="pricingTitle">Simple Pricing</h2>
+    <div class="pricing">
+      <div class="price">
+        <h3 data-i18n="p1Title">AI HTS Report</h3>
+        <strong>$49</strong>
+        <p data-i18n="p1Text">Basic AI-assisted HTS and duty review.</p>
+      </div>
+      <div class="price">
+        <h3 data-i18n="p2Title">Customs Review</h3>
+        <strong>$99+</strong>
+        <p data-i18n="p2Text">Document review, risk check, and clearance recommendation.</p>
+      </div>
+      <div class="price">
+        <h3 data-i18n="p3Title">Business Plan</h3>
+        <strong data-i18n="customPrice">Custom</strong>
+        <p data-i18n="p3Text">Monthly importer compliance, bond, insurance, and logistics support.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title" data-i18n="contactTitle">Request Customs Review</h2>
+    <div class="card" style="max-width:720px;margin:auto;">
+      <p><strong>Email:</strong> <a href="mailto:info@nielcustoms.ai">info@nielcustoms.ai</a></p>
+      <p><strong data-i18n="servicesLabel">Services:</strong> <span data-i18n="serviceList">Customs Entry · Customs Bond · Cargo Insurance · Compliance Review · Logistics Support</span></p>
+      <p><strong data-i18n="disclaimerLabel">Disclaimer:</strong> <span data-i18n="disclaimer">AI output is for preliminary review only. Final customs decisions should be reviewed by a licensed customs broker or qualified compliance professional.</span></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2026 Niel Customs AI. All rights reserved.
+</footer>
+
+<script>
+  const translations = {
+    en: {
+      navServices: "Services",
+      navPricing: "Pricing",
+      navContact: "Contact",
+      eyebrow: "Customs AI · Bond · Logistics",
+      heroTitle: "AI-Powered Customs, Bond & Logistics Review",
+      heroSubtitle: "Upload your import documents and receive AI-assisted HTS classification, duty estimates, bond recommendations, and customs compliance risk review.",
+      startBtn: "Start Free Analysis",
+      requestBtn: "Request Clearance",
+      uploadTitle: "Upload Shipment Documents",
+      uploadDocs: "Commercial Invoice · Packing List · B/L · Arrival Notice",
+      uploadHint: "Click or drag files here",
+      uploadTypes: "PDF, JPG, PNG, DOC, DOCX, XLS, XLSX accepted",
+      previewTitle: "AI Review Preview",
+      hts: "Suggested HTS: Pending",
+      duty: "Estimated Duty: Pending",
+      section301: "Section 301 Risk: Pending",
+      bond: "Bond Recommendation: Pending",
+      status: "Case Status: Documents Needed",
+      submitBtn: "Submit Documents for Review",
+      selected: "Selected files:",
+      noFiles: "Please upload shipment documents first.",
+      submitted: "Files selected successfully. Backend upload/API can be connected next.",
+      servicesTitle: "What Niel Customs AI Can Review",
+      f1Title: "HTS Classification",
+      f1Text: "AI-assisted HTS suggestions with human customs review.",
+      f2Title: "Duty Estimate",
+      f2Text: "Estimate duty, MPF, HMF, Section 301, and related charges.",
+      f3Title: "Bond Recommendation",
+      f3Text: "Determine whether a single transaction bond or continuous bond may be needed.",
+      f4Title: "Compliance Risk",
+      f4Text: "Flag possible AD/CVD, FDA, PGA, origin, and undervaluation risks.",
+      pricingTitle: "Simple Pricing",
+      p1Title: "AI HTS Report",
+      p1Text: "Basic AI-assisted HTS and duty review.",
+      p2Title: "Customs Review",
+      p2Text: "Document review, risk check, and clearance recommendation.",
+      p3Title: "Business Plan",
+      customPrice: "Custom",
+      p3Text: "Monthly importer compliance, bond, insurance, and logistics support.",
+      contactTitle: "Request Customs Review",
+      servicesLabel: "Services:",
+      serviceList: "Customs Entry · Customs Bond · Cargo Insurance · Compliance Review · Logistics Support",
+      disclaimerLabel: "Disclaimer:",
+      disclaimer: "AI output is for preliminary review only. Final customs decisions should be reviewed by a licensed customs broker or qualified compliance professional."
+    },
+    zh: {
+      navServices: "服务",
+      navPricing: "价格",
+      navContact: "联系",
+      eyebrow: "海关 AI · Bond · 物流",
+      heroTitle: "AI 智能海关、Bond 与物流审核",
+      heroSubtitle: "上传进口文件，获取 AI 辅助的 HTS 归类、关税预估、Bond 建议和海关合规风险审核。",
+      startBtn: "开始免费分析",
+      requestBtn: "申请清关服务",
+      uploadTitle: "上传货运文件",
+      uploadDocs: "商业发票 · 装箱单 · 提单 · 到港通知",
+      uploadHint: "点击选择文件，或拖拽文件到这里",
+      uploadTypes: "支持 PDF、JPG、PNG、DOC、DOCX、XLS、XLSX",
+      previewTitle: "AI 审核预览",
+      hts: "建议 HTS 编码：待处理",
+      duty: "预估关税：待处理",
+      section301: "Section 301 风险：待处理",
+      bond: "Bond 建议：待处理",
+      status: "案件状态：需要文件",
+      submitBtn: "提交文件审核",
+      selected: "已选择文件：",
+      noFiles: "请先上传货运文件。",
+      submitted: "文件已选择成功。下一步可以连接后台上传/API。",
+      servicesTitle: "Niel Customs AI 可以审核什么",
+      f1Title: "HTS 商品归类",
+      f1Text: "AI 辅助 HTS 建议，并可由人工海关合规人员复核。",
+      f2Title: "关税预估",
+      f2Text: "预估 Duty、MPF、HMF、Section 301 以及相关费用。",
+      f3Title: "Bond 建议",
+      f3Text: "判断是否可能需要 Single Transaction Bond 或 Continuous Bond。",
+      f4Title: "合规风险审核",
+      f4Text: "提示可能的 AD/CVD、FDA、PGA、原产地、低报价值等风险。",
+      pricingTitle: "简单价格",
+      p1Title: "AI HTS 报告",
+      p1Text: "基础 AI 辅助 HTS 与关税审核。",
+      p2Title: "海关文件审核",
+      p2Text: "文件审核、风险检查和清关建议。",
+      p3Title: "企业方案",
+      customPrice: "定制",
+      p3Text: "月度进口商合规、Bond、保险和物流支持。",
+      contactTitle: "申请海关审核",
+      servicesLabel: "服务：",
+      serviceList: "海关申报 · Customs Bond · 货运保险 · 合规审核 · 物流支持",
+      disclaimerLabel: "免责声明：",
+      disclaimer: "AI 输出仅用于初步审核。最终海关决定应由持牌 Customs Broker 或合格合规专业人员复核。"
+    }
+  };
+
+  let currentLang = "en";
+  let selectedFiles = [];
+
+  const btnEn = document.getElementById("btnEn");
+  const btnZh = document.getElementById("btnZh");
+  const fileInput = document.getElementById("fileInput");
+  const uploadBox = document.getElementById("uploadBox");
+  const fileList = document.getElementById("fileList");
+  const submitBtn = document.getElementById("submitBtn");
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+    document.querySelectorAll("[data-i18n]").forEach((element) => {
+      const key = element.getAttribute("data-i18n");
+      element.textContent = translations[lang][key];
+    });
+    btnEn.classList.toggle("active", lang === "en");
+    btnZh.classList.toggle("active", lang === "zh");
+    renderFiles();
+  }
+
+  function renderFiles() {
+    if (!selectedFiles.length) {
+      fileList.style.display = "none";
+      fileList.innerHTML = "";
+      return;
+    }
+    fileList.style.display = "block";
+    const names = selectedFiles.map((file) => `• ${file.name} (${Math.round(file.size / 1024)} KB)`).join("<br>");
+    fileList.innerHTML = `<strong>${translations[currentLang].selected}</strong><br>${names}`;
+  }
+
+  function handleFiles(files) {
+    selectedFiles = Array.from(files);
+    renderFiles();
+  }
+
+  btnEn.addEventListener("click", () => setLanguage("en"));
+  btnZh.addEventListener("click", () => setLanguage("zh"));
+
+  fileInput.addEventListener("change", (event) => handleFiles(event.target.files));
+
+  uploadBox.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    uploadBox.classList.add("dragover");
+  });
+
+  uploadBox.addEventListener("dragleave", () => uploadBox.classList.remove("dragover"));
+
+  uploadBox.addEventListener("drop", (event) => {
+    event.preventDefault();
+    uploadBox.classList.remove("dragover");
+    fileInput.files = event.dataTransfer.files;
+    handleFiles(event.dataTransfer.files);
+  });
+
+  submitBtn.addEventListener("click", () => {
+    if (!selectedFiles.length) {
+      alert(translations[currentLang].noFiles);
+      return;
+    }
+    alert(translations[currentLang].submitted);
+  });
+</script>
+
+</body>
+</html>
