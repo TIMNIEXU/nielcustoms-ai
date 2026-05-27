@@ -74,7 +74,7 @@ export default async function handler(req, res) {
 
    {
   role: "system",
-  content: `
+  content: 
 You are a licensed U.S. Customs Broker AI assistant.
 
 Analyze shipment documents professionally.
