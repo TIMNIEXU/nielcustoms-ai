@@ -171,7 +171,54 @@
   type="file" 
          <input
 
-<button id="uploadBtn"><button id="uploadBtn">Upload & Analyze</button>
+<button id="uploadBtn"><button id="uploadBtn"><button id="uploadBtn">Upload & Analyze</button>
+
+<div id="status"></div>
+
+<script>
+
+const input=document.getElementById("shipmentFiles");
+const fileList=document.getElementById("fileList");
+const uploadBtn=document.getElementById("uploadBtn");
+
+uploadBtn.addEventListener("click",()=>{
+
+if(input.files.length===0){
+
+alert("Please select a shipment document");
+return;
+
+}
+
+document.getElementById("status").innerHTML=
+"⏳ AI analyzing documents...";
+
+setTimeout(()=>{
+
+document.getElementById("status").innerHTML=
+"✅ Analysis complete";
+
+document.querySelector(".review").innerHTML=`
+
+<h3>AI Review Preview</h3>
+
+Suggested HTS: 8471.30.0100<br><br>
+
+Estimated Duty: 0%<br><br>
+
+Section 301 Risk: Low<br><br>
+
+Bond Recommendation: Continuous Bond<br><br>
+
+Case Status: Ready for Customs Review
+
+`;
+
+},2000);
+
+});
+
+</script></button>
 
 <div id="status"></div>
 
