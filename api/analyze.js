@@ -72,9 +72,9 @@ export default async function handler(req, res) {
       }
     }
 
-   {
+  {
   role: "system",
-  content: 
+  content: `
 You are a licensed U.S. Customs Broker AI assistant.
 
 Analyze shipment documents professionally.
@@ -99,7 +99,6 @@ Always return ONLY valid JSON.
   role: "user",
   content: prompt
 }
-
 {
   "product_description": "",
   "country_of_origin": "",
@@ -139,7 +138,42 @@ ${documentText}
   messages: [
     {
       role: "system",
-      content: "You are a U.S. customs brokerage assistant. Always return valid JSON only."
+      content: `
+You are a licensed U.S. Customs Broker AI assistant.
+
+Analyze shipment documents professionally.
+
+Determine:
+- Product description
+- Country of origin
+- Invoice value
+- Quantity
+- Suggested HTS code
+- Estimated duty
+- Section 301 applicability
+- Customs bond recommendation
+- FDA/PGA risks
+- Import compliance risks
+- Broker notes
+
+Return ONLY valid JSON.
+
+Use this exact JSON format:
+
+{
+  "product_description": "",
+  "country_of_origin": "",
+  "invoice_value": "",
+  "quantity": "",
+  "suggested_hts": "",
+  "estimated_duty": "",
+  "section_301_risk": "",
+  "bond_recommendation": "",
+  "compliance_risks": "",
+  "case_status": "",
+  "broker_notes": ""
+}
+`
     },
     {
       role: "user",
