@@ -537,7 +537,11 @@
         });
 
         const data=await response.json();
-
+if (!response.ok) {
+  document.querySelector(".result").innerHTML =
+    "API Error: " + (data.details || data.error || "Unknown error");
+  return;
+}
         document.querySelector(".result").innerHTML=`
         <strong>AI Review Preview</strong><br><br>
         Suggested HTS: ${data.hts}<br>
