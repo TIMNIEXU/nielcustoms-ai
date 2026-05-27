@@ -72,7 +72,9 @@ export default async function handler(req, res) {
       }
     }
 
-    content: prompt
+   {
+  role: "system",
+  content: `
 You are a licensed U.S. Customs Broker AI assistant.
 
 Analyze shipment documents professionally.
@@ -91,9 +93,12 @@ You must determine:
 - Broker notes
 
 Always return ONLY valid JSON.
-
-Review the shipment documents below and return ONLY valid JSON.
-Return ONLY this JSON structure:
+`
+},
+{
+  role: "user",
+  content: prompt
+}
 
 {
   "product_description": "",
