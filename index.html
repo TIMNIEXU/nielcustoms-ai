@@ -169,40 +169,58 @@
     Upload → Server / Storage → AI OCR → HTS / Duty / Bond Analysis
         <input 
   type="file" 
-          <button id="uploadBtn">Upload & Analyze</button>
+         <input
+type="file"
+id="shipmentFiles"
+multiple
+accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx"
+/>
+
+<button id="uploadBtn">Upload & Analyze</button>
+
+<p id="fileList">No files selected</p>
 
 <div id="status"></div>
 
 <script>
+
+const input=document.getElementById("shipmentFiles");
+const fileList=document.getElementById("fileList");
 const uploadBtn=document.getElementById("uploadBtn");
 const status=document.getElementById("status");
 
-uploadBtn.addEventListener("click",()=>{
+input.addEventListener("change",function(){
 
-let files=document.getElementById("shipmentFiles").files;
-
-if(files.length===0){
-status.innerHTML="❌ Please select file";
+if(input.files.length===0){
+fileList.innerHTML="No files selected";
 return;
 }
 
-status.innerHTML="⏳ Uploading...";
+fileList.innerHTML=Array.from(input.files)
+.map(file=>"✅ "+file.name)
+.join("<br>");
+
+});
+
+uploadBtn.addEventListener("click",()=>{
+
+if(input.files.length===0){
+
+status.innerHTML="❌ Please select a file";
+return;
+
+}
+
+status.innerHTML="⏳ Uploading & analyzing...";
 
 setTimeout(()=>{
 
-status.innerHTML="✅ File uploaded successfully";
+status.innerHTML="✅ AI analysis complete";
 
-document.querySelector(".review").innerHTML=`
-Suggested HTS: 8471.30.0100<br>
-Estimated Duty: 0%<br>
-Section 301 Risk: Low<br>
-Bond Recommendation: Continuous Bond<br>
-Case Status: AI Review Complete
-`;
-
-},2000)
+},2000);
 
 });
+
 </script>
   id="shipmentFiles" 
   multiple 
