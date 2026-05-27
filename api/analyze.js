@@ -105,8 +105,10 @@ ${documentText}
     });
 
     const text = completion.choices[0].message.content;
+    console.log("OPENAI RESPONSE:", text);
     const data = JSON.parse(text);
-
+    console.log("PARSED DATA:", data);
+    
     return res.status(200).json({
       hts: data.suggested_hts || "Review needed",
       duty: data.estimated_duty || "Review needed",
