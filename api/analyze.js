@@ -97,16 +97,21 @@ Shipment documents:
 ${documentText}
 `;
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      temperature: 0.2,
-    });
+   const completion = await openai.chat.completions.create({
+  model: "gpt-4o-mini",
+  response_format: { type: "json_object" },
+  messages: [
+    {
+      role: "system",
+      content: "You are a U.S. customs brokerage assistant. Always return valid JSON only."
+    },
+    {
+      role: "user",
+      content: prompt
+    }
+  ],
+  temperature: 0.1
+});
 
     const text = completion.choices[0].message.content;
 
