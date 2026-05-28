@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "latest",
     "@vercel/blob": "latest",
     "clsx": "latest",
     "lucide-react": "latest",
