@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Niel Customs AI</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #111827; background: linear-gradient(90deg, #f7fbff 0%, #ffffff 100%); }
+    header { height: 76px; display: flex; align-items: center; justify-content: space-between; padding: 0 56px; background: #fff; border-bottom: 1px solid #e5e7eb; }
+    .logo { font-weight: 800; font-size: 26px; }
+    nav { display: flex; align-items: center; gap: 32px; font-weight: 700; }
+    nav a { text-decoration: none; color: #1f2937; }
+    .lang { display: flex; border: 1px solid #d1d5db; border-radius: 24px; overflow: hidden; }
+    .lang button { border: 0; padding: 12px 18px; font-weight: 800; cursor: pointer; background: #fff; }
+    .lang button.active { background: #111827; color: #fff; }
+    main { min-height: calc(100vh - 76px); display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 64px; padding: 90px 64px; align-items: center; }
+    .badge { display: inline-block; padding: 10px 18px; border-radius: 999px; background: #eef6ff; color: #1455d9; font-weight: 800; margin-bottom: 32px; }
+    h1 { font-size: clamp(56px, 6vw, 92px); line-height: 0.98; letter-spacing: -3px; margin: 0 0 34px; font-weight: 900; }
+    .subtitle { max-width: 760px; color: #4b5563; font-size: 25px; line-height: 1.55; margin-bottom: 42px; }
+    .actions { display: flex; gap: 20px; }
+    .btn { padding: 18px 28px; border-radius: 12px; border: 1px solid #d1d5db; background: #fff; font-size: 20px; font-weight: 800; cursor: pointer; }
+    .btn.primary { background: #111827; color: #fff; border-color: #111827; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 28px; box-shadow: 0 24px 80px rgba(17, 24, 39, 0.10); padding: 38px; max-width: 760px; width: 100%; }
+    .card h2 { font-size: 34px; margin: 0 0 26px; }
+    .uploadBox { border: 3px dashed #cbd5e1; border-radius: 18px; padding: 40px 24px; text-align: center; cursor: pointer; margin-bottom: 20px; color: #64748b; }
+    .uploadBox.dragover { background: #f1f5f9; }
+    .uploadIcon { font-size: 42px; margin-bottom: 18px; }
+    .docTypes { font-size: 21px; font-weight: 800; color: #334155; margin-bottom: 12px; }
+    .hint { font-size: 19px; line-height: 1.45; }
+    input[type="file"] { display: none; }
+    .selected { border: 1px solid #dbe3ef; background: #f8fbff; border-radius: 14px; padding: 18px 22px; margin-bottom: 26px; font-size: 17px; line-height: 1.6; }
+    .result { background: #f8f8f9; border-radius: 18px; padding: 26px; margin-bottom: 24px; font-size: 19px; line-height: 1.7; }
+    .submit { width: 100%; padding: 20px; border-radius: 12px; border: none; background: #111827; color: #fff; font-size: 22px; font-weight: 900; cursor: pointer; }
+    @media (max-width: 980px) { header { padding: 0 22px; } main { grid-template-columns: 1fr; padding: 48px 22px; } nav a { display: none; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Niel Customs AI</div>
+    <nav>
+      <a href="#services" data-i18n="services">Services</a>
+      <a href="#pricing" data-i18n="pricing">Pricing</a>
+      <a href="#contact" data-i18n="contact">Contact</a>
+      <div class="lang">
+        <button id="enBtn" class="active">EN</button>
+        <button id="zhBtn">中文</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <div class="badge" data-i18n="badge">Customs AI · Bond · Logistics</div>
+      <h1 data-i18n="title">AI-Powered Customs, Bond & Logistics Review</h1>
+      <div class="subtitle" data-i18n="subtitle">Upload your import documents and receive AI-assisted HTS classification, duty estimates, bond recommendations, and customs compliance risk review.</div>
+      <div class="actions">
+        <button class="btn primary" data-i18n="start">Start Free Analysis</button>
+        <button class="btn" data-i18n="request">Request Clearance</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="uploadTitle">Upload Shipment Documents</h2>
+      <label class="uploadBox" id="dropZone" for="fileInput">
+        <div class="uploadIcon">⬆️</div>
+        <div class="docTypes" data-i18n="docTypes">Commercial Invoice · Packing List · B/L · Arrival Notice</div>
+        <div class="hint"><span data-i18n="uploadHint">Click or drag files here</span><br />PDF, JPG, PNG, DOC, DOCX, XLS, XLSX accepted</div>
+      </label>
+      <input id="fileInput" type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" />
+      <div class="selected" id="selectedFiles"><strong data-i18n="selected">Selected files:</strong><br /><span data-i18n="none">No files selected</span></div>
+      <div class="result" id="result">
+        <strong data-i18n="preview">AI Review Preview</strong><br><br>
+        <span data-i18n="hts">Suggested HTS:</span> Pending<br>
+        <span data-i18n="duty">Estimated Duty:</span> Pending<br>
+        <span data-i18n="section122">Section 122 Temporary Tariff:</span> Pending<br>
+        <span data-i18n="section301">Section 301 Risk:</span> Pending<br>
+        <span data-i18n="bond">Bond Recommendation:</span> Pending<br>
+        <span data-i18n="status">Case Status:</span> Documents Needed
+      </div>
+      <button class="submit" id="submitBtn" data-i18n="submit">Submit Documents for Review</button>
+    </section>
+  </main>
+
+  <script>
+    const translations = {
+      en: { services: "Services", pricing: "Pricing", contact: "Contact", badge: "Customs AI · Bond · Logistics", title: "AI-Powered Customs, Bond & Logistics Review", subtitle: "Upload your import documents and receive AI-assisted HTS classification, duty estimates, bond recommendations, and customs compliance risk review.", start: "Start Free Analysis", request: "Request Clearance", uploadTitle: "Upload Shipment Documents", docTypes: "Commercial Invoice · Packing List · B/L · Arrival Notice", uploadHint: "Click or drag files here", selected: "Selected files:", none: "No files selected", preview: "AI Review Preview", hts: "Suggested HTS:", duty: "Estimated Duty:", section122: "Section 122 Temporary Tariff:", section301: "Section 301 Risk:", bond: "Bond Recommendation:", status: "Case Status:", submit: "Submit Documents for Review", analyzing: "AI analyzing documents...", noFiles: "Please select files first." },
+      zh: { services: "服务", pricing: "价格", contact: "联系", badge: "海关 AI · Bond · 物流", title: "AI 智能海关、Bond 与物流审核", subtitle: "上传进口文件，获取 AI 辅助的 HTS 归类、关税预估、Bond 建议和海关合规风险审核。", start: "开始免费分析", request: "申请清关服务", uploadTitle: "上传货运文件", docTypes: "商业发票 · 装箱单 · 提单 · 到港通知", uploadHint: "点击或拖拽文件到这里", selected: "已选择文件：", none: "未选择文件", preview: "AI 审核预览", hts: "建议 HTS 编码：", duty: "预估关税：", section122: "Section 122 临时关税：", section301: "Section 301 风险：", bond: "Bond 建议：", status: "案件状态：", submit: "提交文件审核", analyzing: "AI 正在分析文件...", noFiles: "请先选择文件。" }
+    };
+
+    let currentLang = "en";
+    let selectedFiles = [];
+
+    const fileInput = document.getElementById("fileInput");
+    const dropZone = document.getElementById("dropZone");
+    const selectedFilesBox = document.getElementById("selectedFiles");
+    const result = document.getElementById("result");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function t(key) { return translations[currentLang][key] || key; }
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        el.textContent = t(key);
+      });
+      document.getElementById("enBtn").classList.toggle("active", lang === "en");
+      document.getElementById("zhBtn").classList.toggle("active", lang === "zh");
+      renderSelectedFiles();
+    }
+
+    function renderSelectedFiles() {
+      if (!selectedFiles.length) {
+        selectedFilesBox.innerHTML = `<strong>${t("selected")}</strong><br>${t("none")}`;
+        return;
+      }
+      const list = selectedFiles.map((file) => `• ${file.name} (${Math.round(file.size / 1024)} KB)`).join("<br>");
+      selectedFilesBox.innerHTML = `<strong>${t("selected")}</strong><br>${list}`;
+    }
+
+    fileInput.addEventListener("change", (event) => {
+      selectedFiles = Array.from(event.target.files || []);
+      renderSelectedFiles();
+    });
+
+    dropZone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      dropZone.classList.add("dragover");
+    });
+
+    dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+
+    dropZone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      dropZone.classList.remove("dragover");
+      selectedFiles = Array.from(event.dataTransfer.files || []);
+      fileInput.files = event.dataTransfer.files;
+      renderSelectedFiles();
+    });
+
+    submitBtn.addEventListener("click", async () => {
+      if (!selectedFiles.length) {
+        alert(t("noFiles"));
+        return;
+      }
+
+      const formData = new FormData();
+      selectedFiles.forEach((file) => formData.append("files", file));
+
+      result.innerHTML = `<strong>${t("preview")}</strong><br><br>${t("analyzing")}`;
+
+      try {
+        const response = await fetch("/api/analyze", { method: "POST", body: formData });
+        const data = await response.json();
+
+        if (!response.ok) {
+          result.innerHTML = "API Error: " + (data.details || data.error || "Unknown error");
+          return;
+        }
+
+        result.innerHTML = `
+          <strong>${t("preview")}</strong><br><br>
+          ${t("hts")} ${data.hts || "Review needed"}<br>
+          ${t("duty")} ${data.duty || "Review needed"}<br>
+          ${t("section122")} ${data.section122 || "Review needed"}<br>
+          ${t("section301")} ${data.section301 || "Review needed"}<br>
+          ${t("bond")} ${data.bond || "Review needed"}<br>
+          ${t("status")} ${data.status || "Broker review required"}<br><br>
+          <strong>Product:</strong> ${data.product || "Review needed"}<br>
+          <strong>Origin:</strong> ${data.origin || "Review needed"}<br>
+          <strong>Invoice Value:</strong> ${data.value || "Review needed"}<br>
+          <strong>Quantity:</strong> ${data.quantity || "Review needed"}<br>
+          <strong>Risk Notes:</strong> ${data.risks || "Review needed"}<br>
+          <strong>Broker Notes:</strong> ${data.notes || "Review needed"}
+        `;
+      } catch (error) {
+        result.innerHTML = "API Error: " + error.message;
+      }
+    });
+
+    document.getElementById("enBtn").addEventListener("click", () => applyLanguage("en"));
+    document.getElementById("zhBtn").addEventListener("click", () => applyLanguage("zh"));
+  </script>
+</body>
+</html>
