@@ -1,2 +1,0 @@
-const modules = ['OCR Upload','AI Tariff Calculator','Customs AI Chatbot','Importer Portal','Automatic HTS Classification','AI Compliance Risk Engine','ABI Integration Layer','ACE Data Integration','Multi-user SaaS','Broker Dashboard','API Products','AI Customs Operating System'];
-export default function PlatformModules(){ return <div className="grid gap-3 md:grid-cols-3">{modules.map(m=><div key={m} className="rounded-xl border border-cyan-500/20 bg-slate-950 p-4 text-cyan-100">{m}</div>)}</div>; }
